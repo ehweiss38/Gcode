@@ -9,8 +9,10 @@ else: f=open(fileName,"x")
 
 inch=25.4
 #total length of x axis
-xSpan=500
-ySpan=500
+xMax=250
+xMin=-250
+yMax=250
+yMin=-250
 zMax=6*inch
 
 #distance to move between measurements
@@ -31,18 +33,19 @@ f.write("G28.3 X0 Y0 Z0 ;\n")
 	
 
 
-f.write(f"G0 X-{xSpan/2} Y{ySpan/2} Z0 ;(chilipeppr_pause);\n\n")
+f.write(f"G0 X-{xMin} Y{yMin} Z0 ;(chilipeppr_pause);\n\n")
 
 downwards=True
 z=0
 while(z<=zMax):
-    lowY=ySpan/2 if downwards else -1*ySpan/2
-    highY=-1*lowY
+#a little connfusing but low meaninng start, high finish, irrespective of actual values
+    lowY=yMin if downwards else yMax
+    highY=yMax if downwards else yMin
     rightwards=True
     y=lowY
     while((downwards and y>=highY) or (downwards==False and y<=highY)):
-        lowX=-1*xSpan/2 if rightwards else xSpan/2
-        highX=-1*lowX
+        lowX=xMin if rightwards else xMax
+        highX=xMax if rightwards else xMin
         x=lowX
         while (x!=highX):
             x+=xIncrement if rightwards else -1*xIncrement
